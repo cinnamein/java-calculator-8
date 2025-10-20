@@ -67,7 +67,7 @@ class ApplicationTest extends NsTest {
     @Test
     void null_테스트() {
         assertSimpleTest(() -> {
-            run("");
+            run("\n");
             assertThat(output()).contains("결과 : 0");
         });
     }

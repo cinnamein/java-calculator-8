@@ -12,8 +12,10 @@ public class StringParser {
 
     public List<BigDecimal> parse(String input) {
         String[] delimiterAndNumbers = parseDelimiter(input);
+        String numbersString = delimiterAndNumbers[1];
         String finalDelimiter = getDelimiterRegex(delimiterAndNumbers[0]);
-        return parseNumbers(finalDelimiter, delimiterAndNumbers[1]);
+        validateStartAndEnd(numbersString, finalDelimiter);
+        return parseNumbers(finalDelimiter, numbersString);
     }
 
     private String[] parseDelimiter(String input) {
@@ -57,6 +59,9 @@ public class StringParser {
     }
 
     private BigDecimal parseAndValidateToken(String token) {
+        if (token.isBlank()) {
+            throw new IllegalArgumentException("구분자는 연속해서 입력할 수 없습니다.");
+        }
         if (!DelimiterConstant.VALID_NUMBER_PATTERN.matcher(token).matches()) {
             throw new IllegalArgumentException("양수만 입력할 수 있습니다.");
         }
@@ -65,5 +70,16 @@ public class StringParser {
             throw new IllegalArgumentException("양수만 입력할 수 있습니다.");
         }
         return number;
+    }
+
+    private void validateStartAndEnd(String numbersString, String finalDelimiter) {
+        Pattern startPattern = Pattern.compile("^(" + finalDelimiter + ")");
+        if (startPattern.matcher(numbersString).find()) {
+            throw new IllegalArgumentException("문자열은 구분자로 시작할 수 없습니다.");
+        }
+        Pattern endPattern = Pattern.compile("(" + finalDelimiter + ")$");
+        if (endPattern.matcher(numbersString).find()) {
+            throw new IllegalArgumentException("문자열은 구분자로 끝날 수 없습니다.");
+        }
     }
 }
