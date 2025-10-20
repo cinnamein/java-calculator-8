@@ -13,10 +13,14 @@ public class Orchestrator {
     private final StringParser stringParser;
     private final Calculator calculator;
 
-    public Orchestrator() {
-        this.validator = new Validator();
-        this.calculator = new Calculator();
-        this.stringParser = new StringParser();
+    public Orchestrator(
+            Validator validator,
+            Calculator calculator,
+            StringParser stringParser
+    ) {
+        this.validator = validator;
+        this.calculator = calculator;
+        this.stringParser = stringParser;
     }
 
     public void calculate() {
